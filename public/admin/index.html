@@ -1,26 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>MPS Administration</title>
-  <link rel="stylesheet" href="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.css">
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#002B5C">
+  <title>MEDP Studio — Administration</title>
+  <link rel="icon" href="/assets/favicon.png">
   <style>
-    body { background: #0A0E1A; }
-    .nc-appHeader-container { background: #002B5C !important; }
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#071426;font-family:Inter,system-ui,sans-serif}
+    #boot{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 50% 20%,#07356a,#071426 55%);z-index:9999;color:#fff;transition:.25s}
+    #boot.hidden{opacity:0;visibility:hidden}.boot-card{text-align:center}.boot-card img{width:112px;height:72px;object-fit:contain}.boot-card strong{display:block;font-size:20px;margin-top:12px}.boot-card span{display:block;color:#c7d4e7;font-size:13px;margin-top:8px}
+    .bar{width:180px;height:3px;background:#ffffff1f;border-radius:8px;margin:24px auto;overflow:hidden}.bar:after{content:"";display:block;width:45%;height:100%;background:#D4AF37;animation:load 1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(125%)}}
+    [class*="AppHeaderContent"]{background:#002B5C!important}[class*="AppHeaderButton"]{border-radius:10px!important}
   </style>
 </head>
 <body>
+  <div id="boot"><div class="boot-card"><img src="/assets/logo-mps-3d.webp" alt="MEDP"><strong>MEDP Studio</strong><span>Chargement de votre espace éditorial sécurisé…</span><div class="bar"></div></div></div>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="https://unpkg.com/decap-cms@3.14.1/dist/decap-cms.js"></script>
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', user => {
-        if (!user) window.netlifyIdentity.on('login', () => document.location.href = '/admin/');
-      });
-    }
-    CMS.init({ config: '/admin/config.yml' });
+    window.netlifyIdentity?.on('init', user => {
+      const tokenFlow = /invite_token|recovery_token|confirmation_token/.test(location.hash);
+      if (!user && tokenFlow) window.netlifyIdentity.open();
+    });
+    window.CMS.init({config:'/admin/config.yml'});
+    window.addEventListener('load',()=>setTimeout(()=>document.getElementById('boot')?.classList.add('hidden'),700));
+    window.netlifyIdentity?.on('logout',()=>location.assign('/'));
   </script>
 </body>
 </html>
