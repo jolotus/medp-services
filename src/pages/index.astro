@@ -1,0 +1,233 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import WhatsAppButton from '../components/WhatsAppButton';
+import InstallPWA from '../components/InstallPWA';
+import UpdateBanner from '../components/UpdateBanner';
+import ServiceCard from '../components/ServiceCard';
+import StripeCheckout from '../components/StripeCheckout';
+import { getCollection } from 'astro:content';
+import settings from '../data/settings.json';
+
+const services = await getCollection('services', s => s.data.featured).then(a => a.sort((a,b) => a.data.order - b.data.order));
+const tarifs = await getCollection('tarifs').then(a => a.sort((a,b) => a.data.order - b.data.order));
+const annonces = await getCollection('annonces', a => a.data.active).then(a => a.sort((a,b) => +new Date(b.data.dateStart) - +new Date(a.data.dateStart)));
+const blogPosts = await getCollection('blog').then(a => a.sort((a,b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate)).slice(0,3));
+
+const heroTitle = settings.hero?.heroTitle || settings.heroTitle || "Vos démarches,";
+const heroAccent = settings.hero?.heroTitleAccent || settings.heroTitleAccent || "notre expertise.";
+const heroSubtitle = settings.hero?.heroSubtitle || settings.heroSubtitle || "Accompagnement administratif, services à la personne, aide aux étrangers en France.";
+const whatsappNumber = settings.whatsappNumber || "+33759083580";
+const annonceActive = settings.announcement?.announcementActive ?? settings.announcementActive ?? true;
+const annonceText = settings.announcement?.announcementText || settings.announcementText || "🚀 Lancement officiel ! Diagnostic Express gratuit pour nos 20 premiers clients — code MEDP20";
+const annonceLink = settings.announcement?.announcementLink || settings.announcementLink || "/contact";
+---
+
+<Layout title={settings.siteTitle} description={settings.siteDescription} image="/assets/logo-mps-hero.png">
+  <UpdateBanner client:load />
+  <Header client:load />
+
+  <!-- Hero Section -->
+  <section class="relative min-h-[95vh] flex items-center justify-center bg-mps-navy overflow-hidden">
+    <!-- Background gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-br from-mps-navy via-mps-navy-dark to-black/80" />
+    
+    <!-- Subtle logo watermark -->
+    <div class="absolute inset-0 flex items-center justify-center opacity-[0.04] pointer-events-none">
+      <img src="/assets/logo-mps-3d.png" alt="" class="w-[800px] h-[800px] object-contain" />
+    </div>
+    
+    <!-- Animated particles effect (CSS) -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-mps-red/5 rounded-full blur-3xl animate-pulse-slow" />
+      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-mps-gold/5 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;" />
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <!-- Logo hero -->
+      <div class="mb-8 flex justify-center">
+        <div class="relative animate-float">
+          <img src="/assets/logo-mps-hero.png" alt="MPS Logo" class="h-32 lg:h-48 w-auto drop-shadow-[0_0_40px_rgba(212,175,55,0.3)]" loading="eager" />
+        </div>
+      </div>
+
+      <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 text-white/90 text-sm mb-8 animate-float shadow-lg shadow-mps-gold/10">
+        <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.6)]"></span>
+        Disponible pour vos démarches — WhatsApp actif
+      </div>
+
+      <h1 class="font-display text-5xl sm:text-6xl lg:text-8xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
+        {heroTitle}<br />
+        <span class="text-mps-gold drop-shadow-[0_0_30px_rgba(212,175,55,0.4)]">{heroAccent}</span>
+      </h1>
+
+      <p class="text-lg sm:text-xl lg:text-2xl text-white/70 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
+        {heroSubtitle}
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+        <a href="/services" class="px-8 py-4 rounded-full bg-mps-red text-white font-bold text-lg hover:bg-mps-red-dark transition-all duration-300 hover:scale-105 shadow-xl shadow-mps-red/40 hover:shadow-mps-red/60">
+          Découvrir nos services
+        </a>
+        <WhatsAppButton text={`Bonjour ${settings.siteTitle.split('—')[0]?.trim()}, je souhaite obtenir un devis pour vos services.`} phone={whatsappNumber.replace('+','')} floating={false} client:load />
+      </div>
+
+      {annonceActive && annonces.length === 0 && (
+        <a href={annonceLink} class="mt-12 block max-w-3xl mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-all duration-300 hover:border-mps-gold/30 group">
+          <div class="flex items-center gap-4">
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-mps-red/20 text-mps-red shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </span>
+            <p class="text-white font-medium text-sm sm:text-base group-hover:text-mps-gold transition-colors">{annonceText}</p>
+            <svg class="w-5 h-5 text-white/40 group-hover:text-mps-gold transition-colors ml-auto shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+      )}
+
+      {annonces.length > 0 && (
+        <div class="mt-12 max-w-3xl mx-auto space-y-3">
+          {annonces.map(a => (
+            <a href="/contact" class="block bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-all duration-300 hover:border-mps-gold/30 group">
+              <div class="flex items-center gap-4">
+                <span class="inline-block px-3 py-1 rounded-full bg-mps-red/20 text-mps-red text-xs font-bold uppercase tracking-wider border border-mps-red/20">{a.data.type}</span>
+                <p class="text-white font-medium text-sm sm:text-base group-hover:text-mps-gold transition-colors">{a.data.title}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="py-24 bg-white relative">
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-mps-navy via-mps-red to-mps-gold" />
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-20">
+        <span class="inline-block px-4 py-1 rounded-full bg-mps-navy/5 text-mps-navy text-xs font-bold uppercase tracking-wider mb-4">Nos Expertises</span>
+        <h2 class="font-display text-4xl sm:text-5xl font-bold text-mps-navy mb-6">Nos pôles d'expertise</h2>
+        <p class="text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed">Une équipe pluridisciplinaire à votre service pour toutes vos démarches en France.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {services.map(s => (
+          <ServiceCard
+            title={s.data.title}
+            description={s.data.description}
+            image={s.data.image}
+            price={s.data.price}
+            badge={s.data.badge}
+            href={`/services/${s.slug}`}
+            whatsappText={s.data.whatsappText}
+            client:load
+          />
+        ))}
+      </div>
+      <div class="text-center mt-16">
+        <a href="/services" class="inline-flex items-center gap-3 text-mps-navy font-bold text-lg hover:text-mps-red transition-colors group">
+          Voir tous les services
+          <span class="w-10 h-10 rounded-full bg-mps-navy/5 flex items-center justify-center group-hover:bg-mps-red/10 transition-colors">
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tarifs -->
+  <section class="py-24 bg-mps-cream relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-20">
+        <span class="inline-block px-4 py-1 rounded-full bg-mps-gold/10 text-mps-gold-dark text-xs font-bold uppercase tracking-wider mb-4">Tarifs</span>
+        <h2 class="font-display text-4xl sm:text-5xl font-bold text-mps-navy mb-6">Nos packs & tarifs</h2>
+        <p class="text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed">Des forfaits clairs, transparents, sans frais cachés. Choisissez celui qui correspond à votre besoin.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {tarifs.map(t => (
+          <div class={`relative rounded-3xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 ${t.data.popular ? 'bg-white border-2 border-mps-gold shadow-xl shadow-mps-gold/10' : 'bg-white border border-gray-100'}`}>
+            {t.data.badge && (
+              <span class="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full bg-mps-red text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-mps-red/30">
+                {t.data.badge}
+              </span>
+            )}
+            <h3 class="font-display text-xl font-bold text-mps-navy mb-3">{t.data.title}</h3>
+            <p class="text-4xl font-black text-mps-gold mb-2">{t.data.price}</p>
+            <p class="text-gray-500 text-sm mb-8 leading-relaxed">{t.data.description}</p>
+            <ul class="space-y-4 mb-10">
+              {t.data.includes.map(item => (
+                <li class="flex items-start gap-3 text-sm text-gray-600">
+                  <span class="w-5 h-5 rounded-full bg-green-50 flex items-center justify-center text-green-500 flex-shrink-0 mt-0.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <StripeCheckout priceId={t.data.stripePriceId} buttonText={`Choisir ${t.data.title}`} className="w-full" client:load />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog preview -->
+  <section class="py-24 bg-white relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
+        <div>
+          <span class="inline-block px-4 py-1 rounded-full bg-mps-red/5 text-mps-red text-xs font-bold uppercase tracking-wider mb-4">Ressources</span>
+          <h2 class="font-display text-4xl sm:text-5xl font-bold text-mps-navy mb-4">Blog & Guides</h2>
+          <p class="text-gray-500 text-lg max-w-xl">Conseils pratiques, actualités réglementaires et guides pour vous accompagner.</p>
+        </div>
+        <a href="/blog" class="hidden sm:inline-flex items-center gap-3 text-mps-navy font-bold hover:text-mps-red transition-colors group">
+          Tous les articles
+          <span class="w-10 h-10 rounded-full bg-mps-navy/5 flex items-center justify-center group-hover:bg-mps-red/10 transition-colors">
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </span>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {blogPosts.map(post => (
+          <a href={`/blog/${post.slug}`} class="group block bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            {post.data.image && (
+              <div class="h-56 overflow-hidden relative">
+                <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                <div class="absolute inset-0 bg-gradient-to-t from-mps-navy/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+            )}
+            <div class="p-8">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-3 py-1 rounded-full bg-mps-navy/5 text-mps-navy text-xs font-bold uppercase tracking-wider">{post.data.category}</span>
+                <span class="text-xs text-gray-400 font-medium">{new Date(post.data.pubDate).toLocaleDateString('fr-FR')}</span>
+              </div>
+              <h3 class="font-display font-bold text-xl text-mps-dark mb-3 group-hover:text-mps-red transition-colors duration-300 leading-tight">{post.data.title}</h3>
+              <p class="text-gray-500 text-sm line-clamp-3 leading-relaxed">{post.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA WhatsApp -->
+  <section class="py-24 bg-mps-navy text-white text-center relative overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.03]">
+      <img src="/assets/logo-mps-3d.png" alt="" class="w-full h-full object-contain" />
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto px-4">
+      <span class="inline-block px-4 py-1 rounded-full bg-white/10 text-white/80 text-xs font-bold uppercase tracking-wider mb-6 border border-white/10">Réactivité garantie</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold mb-6 leading-tight">Prêt à gagner du temps ?</h2>
+      <p class="text-white/60 text-lg sm:text-xl mb-10 leading-relaxed max-w-xl mx-auto">Contactez-nous directement par WhatsApp. Nous répondons rapidement et en toute confidentialité.</p>
+      <WhatsAppButton text={`Bonjour ${settings.siteTitle.split('—')[0]?.trim()}, je suis prêt à être accompagné.`} phone={whatsappNumber.replace('+','')} floating={false} client:load />
+    </div>
+  </section>
+
+  <Footer client:load />
+  <WhatsAppButton phone={whatsappNumber.replace('+','')} client:load />
+  <InstallPWA client:load />
+</Layout>

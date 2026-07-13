@@ -1,0 +1,341 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import WhatsAppButton from '../components/WhatsAppButton';
+import settings from '../data/settings.json';
+---
+
+<Layout title="Simulateur Intelligent — MEDP Services" description="Découvrez rapidement quelle démarche vous correspond : titre de séjour, naturalisation, CAF, APL, et plus. Diagnostic personnalisé en 2 minutes.">
+  <Header client:load />
+
+  <section class="pt-32 pb-20 bg-mps-navy text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="font-display text-4xl sm:text-5xl font-bold mb-4">Simulateur Intelligent</h1>
+      <p class="text-white/70 text-lg max-w-2xl mx-auto">En quelques questions, découvrez exactement quelle démarche vous correspond et quel pack MEDP vous faire accompagner.</p>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Step 1: Situation -->
+      <div id="sim-step-1" class="space-y-8">
+        <div class="text-center mb-10">
+          <span class="inline-block px-4 py-1 rounded-full bg-mps-navy/5 text-mps-navy text-xs font-bold uppercase tracking-wider mb-4">Étape 1 / 3</span>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-mps-navy mb-2">Quelle est votre situation ?</h2>
+          <p class="text-gray-500">Sélectionnez la catégorie qui vous correspond le mieux.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <button onclick="selectSituation('etranger')" class="group relative p-8 rounded-2xl border-2 border-gray-100 hover:border-mps-navy hover:bg-mps-navy/5 transition-all duration-300 text-left">
+            <div class="w-14 h-14 rounded-xl bg-mps-navy/10 flex items-center justify-center text-3xl mb-4 group-hover:bg-mps-navy group-hover:text-white transition-colors">🌍</div>
+            <h3 class="font-display font-bold text-lg text-mps-navy mb-2">Étranger en France</h3>
+            <p class="text-sm text-gray-500">Je souhaite obtenir ou renouveler un titre de séjour, me naturaliser, ou faire venir ma famille.</p>
+          </button>
+
+          <button onclick="selectSituation('famille')" class="group relative p-8 rounded-2xl border-2 border-gray-100 hover:border-mps-red hover:bg-mps-red/5 transition-all duration-300 text-left">
+            <div class="w-14 h-14 rounded-xl bg-mps-red/10 flex items-center justify-center text-3xl mb-4 group-hover:bg-mps-red group-hover:text-white transition-colors">👨‍👩‍👧‍👦</div>
+            <h3 class="font-display font-bold text-lg text-mps-navy mb-2">Famille & Allocations</h3>
+            <p class="text-sm text-gray-500">J'ai besoin d'aide pour la CAF, l'APL, la prime d'activité, ou le regroupement familial.</p>
+          </button>
+
+          <button onclick="selectSituation('documents')" class="group relative p-8 rounded-2xl border-2 border-gray-100 hover:border-mps-gold hover:bg-mps-gold/5 transition-all duration-300 text-left">
+            <div class="w-14 h-14 rounded-xl bg-mps-gold/10 flex items-center justify-center text-3xl mb-4 group-hover:bg-mps-gold group-hover:text-white transition-colors">📝</div>
+            <h3 class="font-display font-bold text-lg text-mps-navy mb-2">Documents & Écriture</h3>
+            <p class="text-sm text-gray-500">Je ne sais pas remplir un formulaire, rédiger une lettre administrative, ou constituer un dossier.</p>
+          </button>
+
+          <button onclick="selectSituation('personne')" class="group relative p-8 rounded-2xl border-2 border-gray-100 hover:border-green-600 hover:bg-green-50 transition-all duration-300 text-left">
+            <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center text-3xl mb-4 group-hover:bg-green-600 group-hover:text-white transition-colors">🏠</div>
+            <h3 class="font-display font-bold text-lg text-mps-navy mb-2">Services à domicile</h3>
+            <p class="text-sm text-gray-500">J'ai besoin d'aide à domicile (ménage, repassage, courses) ou je souhaite proposer mes services.</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Sub-questions (dynamic) -->
+      <div id="sim-step-2" class="hidden space-y-8">
+        <div class="text-center mb-10">
+          <span class="inline-block px-4 py-1 rounded-full bg-mps-navy/5 text-mps-navy text-xs font-bold uppercase tracking-wider mb-4">Étape 2 / 3</span>
+          <h2 id="step-2-title" class="font-display text-2xl sm:text-3xl font-bold text-mps-navy mb-2">Précisez votre situation</h2>
+          <p class="text-gray-500">Cela nous permet de vous orienter vers le bon accompagnement.</p>
+        </div>
+
+        <div id="step-2-etranger" class="hidden space-y-4">
+          <button onclick="selectSub('titre-sejour')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-navy hover:bg-mps-navy/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">🛂</span>
+            <div><h4 class="font-bold text-mps-navy">Titre de séjour</h4><p class="text-sm text-gray-500">Première demande ou renouvellement</p></div>
+          </button>
+          <button onclick="selectSub('naturalisation')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-navy hover:bg-mps-navy/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">🇫🇷</span>
+            <div><h4 class="font-bold text-mps-navy">Naturalisation</h4><p class="text-sm text-gray-500">Devenir Français par décret</p></div>
+          </button>
+          <button onclick="selectSub('regroupement')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-navy hover:bg-mps-navy/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">👨‍👩‍👧‍👦</span>
+            <div><h4 class="font-bold text-mps-navy">Regroupement familial</h4><p class="text-sm text-gray-500">Faire venir ma famille en France</p></div>
+          </button>
+          <button onclick="selectSub('visa-cameroun')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-navy hover:bg-mps-navy/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">🇨🇲</span>
+            <div><h4 class="font-bold text-mps-navy">Visa / Passeport Camerounais</h4><p class="text-sm text-gray-500">Démarches consulaires</p></div>
+          </button>
+        </div>
+
+        <div id="step-2-famille" class="hidden space-y-4">
+          <button onclick="selectSub('caf-apl')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-red hover:bg-mps-red/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">🏠</span>
+            <div><h4 class="font-bold text-mps-navy">CAF / APL / ALS</h4><p class="text-sm text-gray-500">Aide au logement et prestations familiales</p></div>
+          </button>
+          <button onclick="selectSub('prime-activite')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-red hover:bg-mps-red/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">💶</span>
+            <div><h4 class="font-bold text-mps-navy">Prime d'activité</h4><p class="text-sm text-gray-500">Complément de revenus d'activité</p></div>
+          </button>
+          <button onclick="selectSub('france-travail')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-red hover:bg-mps-red/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">💼</span>
+            <div><h4 class="font-bold text-mps-navy">France Travail (Pôle emploi)</h4><p class="text-sm text-gray-500">Actualisation et déclarations</p></div>
+          </button>
+        </div>
+
+        <div id="step-2-documents" class="hidden space-y-4">
+          <button onclick="selectSub('lettre')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-gold hover:bg-mps-gold/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">✉️</span>
+            <div><h4 class="font-bold text-mps-navy">Rédaction de lettre</h4><p class="text-sm text-gray-500">Recours, relance, demande, contestation</p></div>
+          </button>
+          <button onclick="selectSub('formulaire')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-gold hover:bg-mps-gold/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">📋</span>
+            <div><h4 class="font-bold text-mps-navy">Remplissage de formulaire</h4><p class="text-sm text-gray-500">ANEF, CAF, impôts, France Travail...</p></div>
+          </button>
+          <button onclick="selectSub('dossier')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-mps-gold hover:bg-mps-gold/5 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">📁</span>
+            <div><h4 class="font-bold text-mps-navy">Constitution de dossier</h4><p class="text-sm text-gray-500">Tri, classement, vérification des pièces</p></div>
+          </button>
+        </div>
+
+        <div id="step-2-personne" class="hidden space-y-4">
+          <button onclick="selectSub('menage')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-green-600 hover:bg-green-50 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">🧹</span>
+            <div><h4 class="font-bold text-mps-navy">Ménage</h4><p class="text-sm text-gray-500">Nettoyage complet, sols, vitres, cuisine</p></div>
+          </button>
+          <button onclick="selectSub('repassage')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-green-600 hover:bg-green-50 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">👔</span>
+            <div><h4 class="font-bold text-mps-navy">Repassage</h4><p class="text-sm text-gray-500">À domicile ou en récupération</p></div>
+          </button>
+          <button onclick="selectSub('courses')" class="w-full p-6 rounded-2xl border border-gray-100 hover:border-green-600 hover:bg-green-50 transition-all text-left flex items-center gap-4">
+            <span class="text-2xl">🛒</span>
+            <div><h4 class="font-bold text-mps-navy">Courses & accompagnement</h4><p class="text-sm text-gray-500">Courses, pharmacie, promenade</p></div>
+          </button>
+        </div>
+
+        <button onclick="backToStep1()" class="text-sm text-gray-400 hover:text-mps-navy flex items-center gap-2 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
+          Retour
+        </button>
+      </div>
+
+      <!-- Step 3: Result -->
+      <div id="sim-step-3" class="hidden space-y-8">
+        <div class="text-center mb-10">
+          <span class="inline-block px-4 py-1 rounded-full bg-mps-gold/10 text-mps-gold text-xs font-bold uppercase tracking-wider mb-4">Résultat</span>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-mps-navy mb-2">Votre diagnostic personnalisé</h2>
+          <p class="text-gray-500">Voici le pack MEDP recommandé pour votre situation.</p>
+        </div>
+
+        <div id="result-card" class="bg-gradient-to-br from-mps-navy to-mps-navy-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-mps-gold/10 rounded-full blur-3xl pointer-events-none" />
+          <div id="result-content" class="relative z-10">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button onclick="backToStep1()" class="text-sm text-gray-400 hover:text-mps-navy flex items-center gap-2 mx-auto transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Refaire le simulateur
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <Footer client:load />
+  <WhatsAppButton client:load />
+
+  <script is:inline>
+    const RESULTS = {
+      'titre-sejour': {
+        title: 'Pack Titre de Séjour',
+        price: '49€',
+        desc: 'Accompagnement complet pour votre demande ou renouvellement de titre de séjour via l\'ANEF.',
+        includes: ['Analyse de votre situation et éligibilité', 'Constitution complète du dossier ANEF', 'Vérification des pièces justificatives', 'Rédaction des lettres de relance', 'Suivi jusqu\'à la réception du titre', 'Accès prioritaire WhatsApp pendant 3 mois'],
+        cta: 'Commander le Pack Titre de Séjour',
+        whatsapp: 'Bonjour MEDP, le simulateur m\'a recommandé le Pack Titre de Séjour. Je souhaite en savoir plus.',
+        link: '/services/etrangers-sejour'
+      },
+      'naturalisation': {
+        title: 'Pack Naturalisation',
+        price: '89€',
+        desc: 'Accompagnement de A à Z pour votre demande de naturalisation française.',
+        includes: ['Évaluation de l\'éligibilité', 'Constitution du dossier', 'Préparation à l\'entretien d\'assimilation', 'Quiz interactif et fiches', 'Suivi complet jusqu\'à la décision', 'Accès prioritaire WhatsApp 6 mois'],
+        cta: 'Commander le Pack Naturalisation',
+        whatsapp: 'Bonjour MEDP, le simulateur m\'a recommandé le Pack Naturalisation. Je souhaite en savoir plus.',
+        link: '/services/etrangers-sejour'
+      },
+      'regroupement': {
+        title: 'Pack Titre de Séjour + Regroupement',
+        price: '49€',
+        desc: 'Le Pack Titre de Séjour couvre également le regroupement familial.',
+        includes: ['Analyse du droit au regroupement', 'Constitution du dossier complet', 'Vérification des pièces du conjoint/enfants', 'Suivi préfecture', 'Accès prioritaire WhatsApp'],
+        cta: 'Commander ce pack',
+        whatsapp: 'Bonjour MEDP, le simulateur m\'a recommandé le Pack Titre de Séjour pour un regroupement familial.',
+        link: '/services/etrangers-sejour'
+      },
+      'visa-cameroun': {
+        title: 'Accompagnement Visa & Passeport Camerounais',
+        price: 'Sur devis',
+        desc: 'Nous vous accompagnons dans toutes les démarches consulaires camerounaises.',
+        includes: ['Vérification de votre dossier', 'Remplissage des formulaires', 'Prise de rendez-vous', 'Suivi de votre demande', 'Conseil en cas de difficulté'],
+        cta: 'Demander un devis par WhatsApp',
+        whatsapp: 'Bonjour MEDP, le simulateur m\'a orienté vers l\'accompagnement visa/passeport camerounais.',
+        link: '/services/etrangers-sejour'
+      },
+      'caf-apl': {
+        title: 'Pack CAF & APL',
+        price: '29€',
+        desc: 'Accompagnement complet pour votre demande de prestations CAF et APL.',
+        includes: ['Simulation d\'éligibilité', 'Remplissage formulaires CAF', 'Vérification pièces', 'Suivi jusqu\'au 1er versement', 'Conseil déclaration trimestrielle'],
+        cta: 'Commander le Pack CAF & APL',
+        whatsapp: 'Bonjour MEDP, le simulateur m\'a recommandé le Pack CAF & APL.',
+        link: '/services/famille-allocations'
+      },
+      'prime-activite': {
+        title: 'Pack CAF & APL',
+        price: '29€',
+        desc: 'La prime d\'activité est gérée dans le cadre du Pack CAF & APL.',
+        includes: ['Simulation', 'Demande en ligne', 'Suivi', 'Conseil actualisation'],
+        cta: 'Commander le Pack CAF & APL',
+        whatsapp: 'Bonjour MEDP, le simulateur m\'a recommandé le Pack CAF & APL pour la prime d\'activité.',
+        link: '/services/famille-allocations'
+      },
+      'france-travail': {
+        title: 'Pack CAF & APL',
+        price: '29€',
+        desc: 'L\'actualisation France Travail est incluse dans notre Pack CAF & APL.',
+        includes: ['Rappel des échéances', 'Actualisation en ligne', 'Déclaration d\'emploi', 'Conseil'],
+        cta: 'Commander le Pack CAF & APL',
+        whatsapp: 'Bonjour MEDP, j\'ai besoin d\'aide pour mon actualisation France Travail.',
+        link: '/services/famille-allocations'
+      },
+      'lettre': {
+        title: 'Lettre administrative',
+        price: 'À partir de 15€',
+        desc: 'Rédaction professionnelle de votre lettre administrative par notre écrivain public.',
+        includes: ['Écoute de votre situation', 'Rédaction structurée et percutante', 'Relecture et corrections', 'Conseil sur la démarche suivante'],
+        cta: 'Commander par WhatsApp',
+        whatsapp: 'Bonjour MEDP, le simulateur m\'a orienté vers la rédaction d\'une lettre administrative.',
+        link: '/services/documents-ecriture'
+      },
+      'formulaire': {
+        title: 'Remplissage de formulaire',
+        price: '15€ par formulaire',
+        desc: 'Nous remplissons pour vous les formulaires les plus complexes.',
+        includes: ['Vérification de votre éligibilité', 'Remplissage complet', 'Vérification conformité', 'Conseil pièces justificatives'],
+        cta: 'Commander par WhatsApp',
+        whatsapp: 'Bonjour MEDP, j\'ai besoin d\'aide pour remplir un formulaire.',
+        link: '/services/documents-ecriture'
+      },
+      'dossier': {
+        title: 'Constitution de dossier',
+        price: 'Sur devis',
+        desc: 'Nous organisons, vérifions et complétons votre dossier administratif.',
+        includes: ['Audit du dossier existant', 'Liste des pièces manquantes', 'Rangement et classement', 'Vérification conformité'],
+        cta: 'Demander un devis',
+        whatsapp: 'Bonjour MEDP, j\'ai besoin d\'aide pour constituer un dossier administratif.',
+        link: '/services/documents-ecriture'
+      },
+      'menage': {
+        title: 'Ménage à domicile',
+        price: '22€ à 35€/heure',
+        desc: 'Intervention professionnelle chez vous avec crédit d\'impôt 50%.',
+        includes: ['Nettoyage complet', 'Produits fournis sur demande', 'Intervenant de confiance', 'Crédit d\'impôt 50%'],
+        cta: 'Devis gratuit par WhatsApp',
+        whatsapp: 'Bonjour MEDP, je cherche une aide ménagère à domicile.',
+        link: '/services/services-personne'
+      },
+      'repassage': {
+        title: 'Repassage à domicile',
+        price: '22€ à 35€/heure',
+        desc: 'Vos vêtements repassés à domicile ou en récupération/livraison.',
+        includes: ['Repassage soigné', 'Rangement', 'Livraison possible', 'Crédit d\'impôt 50%'],
+        cta: 'Devis gratuit par WhatsApp',
+        whatsapp: 'Bonjour MEDP, je cherche une aide au repassage.',
+        link: '/services/services-personne'
+      },
+      'courses': {
+        title: 'Courses & accompagnement',
+        price: '22€ à 35€/heure',
+        desc: 'Courses, pharmacie, promenade, accompagnement personnalisé.',
+        includes: ['Courses au choix', 'Pharmacie', 'Promenade', 'Personne de confiance'],
+        cta: 'Devis gratuit par WhatsApp',
+        whatsapp: 'Bonjour MEDP, j\'ai besoin d\'aide pour les courses et accompagnement.',
+        link: '/services/services-personne'
+      },
+    };
+
+    let currentSituation = '';
+
+    function selectSituation(situation) {
+      currentSituation = situation;
+      document.getElementById('sim-step-1').classList.add('hidden');
+      document.getElementById('sim-step-2').classList.remove('hidden');
+      
+      // Hide all sub-panels
+      ['etranger', 'famille', 'documents', 'personne'].forEach(s => {
+        document.getElementById('step-2-' + s).classList.add('hidden');
+      });
+      // Show relevant
+      document.getElementById('step-2-' + situation).classList.remove('hidden');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectSub(sub) {
+      const result = RESULTS[sub];
+      if (!result) return;
+      
+      document.getElementById('sim-step-2').classList.add('hidden');
+      document.getElementById('sim-step-3').classList.remove('hidden');
+      
+      const content = document.getElementById('result-content');
+      content.innerHTML = `
+        <div class="flex items-center gap-3 mb-6">
+          <span class="px-3 py-1 rounded-full bg-mps-gold/20 text-mps-gold text-xs font-bold uppercase tracking-wider border border-mps-gold/30">Recommandé</span>
+        </div>
+        <h3 class="font-display text-3xl font-bold mb-2">${result.title}</h3>
+        <p class="text-4xl font-black text-mps-gold mb-6">${result.price}</p>
+        <p class="text-white/80 text-lg mb-8 max-w-xl">${result.desc}</p>
+        <ul class="space-y-3 mb-10">
+          ${result.includes.map(i => `<li class="flex items-start gap-3 text-white/90"><svg class="w-5 h-5 text-mps-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${i}</li>`).join('')}
+        </ul>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="${result.link}" class="px-8 py-4 rounded-full bg-mps-gold text-mps-navy-dark font-bold text-center hover:bg-mps-gold-light transition-all hover:scale-105 shadow-lg">
+            ${result.cta}
+          </a>
+          <a href="https://wa.me/33759083580?text=${encodeURIComponent(result.whatsapp)}" target="_blank" rel="noopener" class="px-8 py-4 rounded-full bg-white/10 text-white font-bold text-center border border-white/20 hover:bg-white/20 transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      `;
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToStep1() {
+      document.getElementById('sim-step-1').classList.remove('hidden');
+      document.getElementById('sim-step-2').classList.add('hidden');
+      document.getElementById('sim-step-3').classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</Layout>

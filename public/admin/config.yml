@@ -1,0 +1,260 @@
+backend:
+  name: git-gateway
+  branch: main
+  repo: medp-services/medp-services
+
+publish_mode: editorial_workflow
+media_folder: "public/assets/uploads"
+public_folder: "/assets/uploads"
+
+# Global search in all collections
+search: true
+
+collections:
+  # ============================================================
+  # 1. PARAMÈTRES GLOBAUX DU SITE (éditable sans coder)
+  # ============================================================
+  - name: "settings"
+    label: "⚙️ Paramètres Globaux du Site"
+    description: "Modifiez ici les couleurs, le texte du footer, les numéros de téléphone, le titre du site... Tout se met à jour automatiquement."
+    files:
+      - file: "src/data/settings.json"
+        label: "🎨 Configuration complète"
+        fields:
+          - label: "Titre du site (onglet navigateur)"
+            name: "siteTitle"
+            widget: "string"
+          - label: "Description SEO (Google)"
+            name: "siteDescription"
+            widget: "text"
+          - label: "Mots-clés SEO (séparés par virgules)"
+            name: "metaKeywords"
+            widget: "string"
+
+          - label: "🦸 Section Hero (page d'accueil)"
+            name: "hero"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Titre principal (ligne 1)", name: "heroTitle", widget: "string" }
+              - { label: "Titre accentué (ligne 2, couleur or)", name: "heroTitleAccent", widget: "string" }
+              - { label: "Sous-titre / description", name: "heroSubtitle", widget: "text" }
+
+          - label: "📱 Contact principal (MEDP)"
+            name: "contact"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Numéro WhatsApp (format international, sans espaces)", name: "whatsappNumber", widget: "string", hint: "Ex: +33759083580" }
+              - { label: "Numéro affiché (avec espaces)", name: "whatsappDisplay", widget: "string", hint: "Ex: +33 7 59 08 35 80" }
+              - { label: "Numéro téléphone (si différent)", name: "phoneNumber", widget: "string", required: false }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Adresse / Zone d'intervention", name: "address", widget: "text" }
+              - { label: "Horaires", name: "hours", widget: "text" }
+
+          - label: "🎨 Palette de couleurs"
+            name: "colors"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Bleu principal (fond header, titres)", name: "primaryColor", widget: "color", enableAlpha: false }
+              - { label: "Rouge (badges, boutons)", name: "secondaryColor", widget: "color", enableAlpha: false }
+              - { label: "Or / Doré (accents, prix)", name: "goldColor", widget: "color", enableAlpha: false }
+              - { label: "Crème (fond de page)", name: "creamColor", widget: "color", enableAlpha: false }
+              - { label: "Noir profond (footer)", name: "darkColor", widget: "color", enableAlpha: false }
+
+          - label: "📢 Bannière d'annonce (page d'accueil)"
+            name: "announcement"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Activer la bannière", name: "announcementActive", widget: "boolean", default: true }
+              - { label: "Texte de la bannière", name: "announcementText", widget: "string" }
+              - { label: "Lien au clic", name: "announcementLink", widget: "string", required: false }
+
+          - label: "📎 Réseaux sociaux"
+            name: "socials"
+            widget: "list"
+            fields:
+              - label: "Plateforme"
+                name: "name"
+                widget: "select"
+                options: ["whatsapp", "facebook", "twitter", "linkedin", "instagram", "tiktok"]
+              - { label: "URL complète", name: "url", widget: "string" }
+
+          - label: "📝 Texte du Footer (crédits TIT-CS)"
+            name: "footerText"
+            widget: "markdown"
+            hint: "Ce texte apparaît en bas de TOUTES les pages. Vous pouvez modifier le texte, les liens, les numéros..."
+
+          - label: "💳 Paiements Stripe"
+            name: "stripe"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Mode Live (cocher = vrai paiement, décocher = test)", name: "stripeLive", widget: "boolean", default: false }
+              - { label: "Clé publique Stripe (pk_test_... ou pk_live_...)", name: "stripePublishableKey", widget: "string", hint: "Trouvez-la dans votre Dashboard Stripe > Développeurs > Clés API" }
+
+          - label: "💰 PayPal"
+            name: "paypal"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Client ID PayPal", name: "paypalClientId", widget: "string", required: false, hint: "Trouvez-le dans votre compte PayPal Developer > Applications > App > Client ID" }
+
+  # ============================================================
+  # 2. SERVICES (les 6 pôles + futurs)
+  # ============================================================
+  - name: "services"
+    label: "🛎️ Services / Pôles"
+    description: "Ajoutez, modifiez ou supprimez des services. Chaque service apparaît sur la page d'accueil et sa propre page dédiée."
+    folder: "src/content/services"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titre du service", name: "title", widget: "string" }
+      - { label: "Description courte (affichée sur la carte)", name: "description", widget: "text" }
+      - label: "Catégorie"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Accueil & Orientation", value: "accueil" }
+          - { label: "Étrangers & Séjour", value: "etrangers" }
+          - { label: "Social & Administratif", value: "social" }
+          - { label: "Documents & Écriture", value: "documents" }
+          - { label: "Famille & Allocations", value: "famille" }
+          - { label: "Services à la Personne", value: "personne" }
+      - { label: "Prix indicatif", name: "price", widget: "string", required: false, hint: "Ex: À partir de 49€, 22€/h, Gratuit..." }
+      - { label: "Icône (emoji)", name: "icon", widget: "string", required: false, hint: "Ex: 🌍, 📝, 🏠..." }
+      - { label: "Image visuelle", name: "image", widget: "image", required: false, hint: "Téléchargez une image ici ou laissez vide pour utiliser l'image par défaut du pôle." }
+      - { label: "Badge (optionnel)", name: "badge", widget: "string", required: false, hint: "Ex: POPULAIRE, NOUVEAU, -50% IMPÔT..." }
+      - { label: "Texte WhatsApp pré-rempli", name: "whatsappText", widget: "text", required: false, hint: "Message envoyé quand le client clique sur WhatsApp depuis cette page." }
+      - { label: "Ordre d'affichage", name: "order", widget: "number", value_type: "int", default: 0, hint: "0 = premier, 1 = deuxième..." }
+      - { label: "Mis en avant sur l'accueil", name: "featured", widget: "boolean", default: false }
+      - { label: "Contenu détaillé (la page complète)", name: "body", widget: "markdown", hint: "Rédigez ici la page complète du service. Utilisez les titres, listes, tableaux..." }
+
+  # ============================================================
+  # 3. TARIFS & PACKS
+  # ============================================================
+  - name: "tarifs"
+    label: "💰 Tarifs & Packs à vendre"
+    description: "Modifiez vos prix, ajoutez des packs, changez les inclusions. Les boutons de paiement apparaissent automatiquement."
+    folder: "src/content/tarifs"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nom du pack", name: "title", widget: "string" }
+      - { label: "Prix affiché", name: "price", widget: "string", hint: "Ex: 49€, 9,90€/mois, 29€..." }
+      - { label: "Description courte", name: "description", widget: "text" }
+      - label: "Inclusions (ce qui est compris dans le pack)"
+        name: "includes"
+        widget: "list"
+        field: { label: "Élément inclus", name: "item", widget: "string" }
+      - { label: "Badge (optionnel)", name: "badge", widget: "string", required: false }
+      - { label: "ID Prix Stripe (si vous avez configuré Stripe)", name: "stripePriceId", widget: "string", required: false, hint: "Ex: price_1ABC... (créez d'abord le produit dans Stripe)" }
+      - { label: "Pack populaire (mis en avant visuellement)", name: "popular", widget: "boolean", default: false }
+      - { label: "Ordre d'affichage", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Contenu additionnel", name: "body", widget: "markdown", required: false }
+
+  # ============================================================
+  # 4. ARTICLES DE BLOG
+  # ============================================================
+  - name: "blog"
+    label: "📝 Blog & Articles"
+    description: "Rédigez vos articles SEO. Chaque article génère sa propre page et améliore votre référencement Google."
+    folder: "src/content/blog"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Titre de l'article", name: "title", widget: "string" }
+      - { label: "Description SEO (affichée sur Google)", name: "description", widget: "text" }
+      - { label: "Date de publication", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Date de mise à jour (optionnel)", name: "updatedDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - label: "Catégorie"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Accueil & Orientation", value: "accueil" }
+          - { label: "Étrangers & Séjour", value: "etrangers" }
+          - { label: "Social & Administratif", value: "social" }
+          - { label: "Documents & Écriture", value: "documents" }
+          - { label: "Famille & Allocations", value: "famille" }
+          - { label: "Services à la Personne", value: "personne" }
+          - { label: "Général / Actualités", value: "general" }
+      - { label: "Tags (séparés par virgule)", name: "tags", widget: "list", required: false, field: { label: "Tag", name: "tag", widget: "string" } }
+      - { label: "Auteur", name: "author", widget: "string", default: "MPS Team" }
+      - { label: "Image de couverture", name: "image", widget: "image", required: false }
+      - { label: "Article mis en avant", name: "featured", widget: "boolean", default: false, hint: "Apparaît en grand sur la page d'accueil." }
+      - { label: "Contenu de l'article", name: "body", widget: "markdown" }
+
+  # ============================================================
+  # 5. ANNONCES & OFFRES (bandeau page d'accueil)
+  # ============================================================
+  - name: "annonces"
+    label: "📢 Annonces & Offres spéciales"
+    description: "Créez des annonces qui apparaissent en page d'accueil (recrutement, promo, partenariat...). Activez/désactivez à volonté."
+    folder: "src/content/annonces"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titre de l'annonce", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date de début", name: "dateStart", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Date de fin (optionnel)", name: "dateEnd", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - label: "Type d'annonce"
+        name: "type"
+        widget: "select"
+        options:
+          - { label: "Offre spéciale / Promo", value: "offre" }
+          - { label: "Recrutement", value: "recrutement" }
+          - { label: "Partenariat", value: "partenariat" }
+          - { label: "Actualité", value: "actualite" }
+      - label: "Couleur du badge"
+        name: "badgeColor"
+        widget: "select"
+        options:
+          - { label: "Bleu", value: "blue" }
+          - { label: "Rouge", value: "red" }
+          - { label: "Vert", value: "green" }
+          - { label: "Or", value: "gold" }
+      - { label: "Annonce active", name: "active", widget: "boolean", default: true, hint: "Décocher pour masquer sans supprimer." }
+      - { label: "Contenu détaillé", name: "body", widget: "markdown", required: false }
+
+  # ============================================================
+  # 6. FAQ (Questions fréquentes)
+  # ============================================================
+  - name: "faq"
+    label: "❓ FAQ — Questions fréquentes"
+    description: "Ajoutez/modifiez les questions/réponses. Elles apparaissent sur la page contact et améliorent le SEO."
+    folder: "src/content/faq"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Question", name: "question", widget: "string" }
+      - { label: "Réponse", name: "answer", widget: "markdown" }
+      - { label: "Catégorie", name: "category", widget: "string", default: "Général" }
+      - { label: "Ordre d'affichage", name: "order", widget: "number", value_type: "int", default: 0 }
+
+  # ============================================================
+  # 7. ACTUALITÉS AUTOMATIQUES (scraping)
+  # ============================================================
+  - name: "news"
+    label: "📰 Actualités Auto (scraping)"
+    description: "Articles importés automatiquement depuis les sites officiels. Vérifiez et validez avant publication."
+    folder: "src/content/news"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "URL source officielle", name: "sourceUrl", widget: "string" }
+      - { label: "Date", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Généré automatiquement", name: "autoGenerated", widget: "boolean", default: false }
+      - { label: "Validé et prêt à publier", name: "validated", widget: "boolean", default: false, hint: "Ne cocher que si vous avez relu et vérifié l'information." }
+      - { label: "Catégorie", name: "category", widget: "string", default: "general" }
+      - { label: "Contenu de l'actualité", name: "body", widget: "markdown" }

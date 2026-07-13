@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import WhatsAppButton from '../components/WhatsAppButton';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog').then(a => a.sort((a,b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate)));
+---
+
+<Layout title="Blog & Guides — MEDP Services" description="Articles, guides pratiques et actualités pour vous accompagner dans vos démarches administratives et personnelles.">
+  <Header client:load />
+
+  <section class="pt-32 pb-20 bg-mps-navy text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="font-display text-4xl sm:text-5xl font-bold mb-4">Blog & Guides</h1>
+      <p class="text-white/70 text-lg max-w-2xl mx-auto">Conseils pratiques, actualités réglementaires et guides pour vous accompagner au quotidien.</p>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}`} class="group block bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-1">
+            {post.data.image && (
+              <div class="h-48 overflow-hidden">
+                <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+              </div>
+            )}
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="px-2 py-1 rounded-md bg-mps-navy/5 text-mps-navy text-xs font-semibold uppercase">{post.data.category}</span>
+                <span class="text-xs text-gray-400">{new Date(post.data.pubDate).toLocaleDateString('fr-FR')}</span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-mps-dark mb-2 group-hover:text-mps-red transition-colors">{post.data.title}</h3>
+              <p class="text-gray-600 text-sm line-clamp-3">{post.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer client:load />
+  <WhatsAppButton client:load />
+</Layout>

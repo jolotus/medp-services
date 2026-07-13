@@ -1,0 +1,30 @@
+{
+  "siteTitle": "MEDP Services — Meudjieuh Prestation & Services",
+  "siteDescription": "Accompagnement administratif, services à la personne, aide aux étrangers en France. Confidentialité et discrétion assurées.",
+  "heroTitle": "Vos démarches,",
+  "heroTitleAccent": "notre expertise.",
+  "heroSubtitle": "Accompagnement administratif, services à la personne, aide aux étrangers en France. Confidentialité, discrétion et efficacité assurées.",
+  "whatsappNumber": "+33759083580",
+  "whatsappDisplay": "+33 7 59 08 35 80",
+  "phoneNumber": "+33759083580",
+  "email": "contact@medp-services.fr",
+  "address": "France (interventions sur toute l'Ile-de-France et à distance)",
+  "hours": "Lundi – Vendredi : 08h00 – 18h00 | Samedi : 09h00 – 14h00",
+  "primaryColor": "#002B5C",
+  "secondaryColor": "#C8102E",
+  "goldColor": "#D4AF37",
+  "creamColor": "#F5F5F0",
+  "darkColor": "#0A0E1A",
+  "footerText": "Site conçu et développé par **TIT-CS — TIT-CONSULTING SOLUTIONS** du \"Prince\" **Joël NOUBISSIE TCHASSOM** — Bafang, Haut-Nkam, Cameroun  \n📱 [WhatsApp +237 695 51 25 28](https://wa.me/237695512528) · 📧 [contact@tit-cs.com](mailto:contact@tit-cs.com) · 🌐 [tit-cs.netlify.app](https://tit-cs.netlify.app)",
+  "socials": [
+    { "name": "whatsapp", "url": "https://wa.me/33759083580" },
+    { "name": "facebook", "url": "https://facebook.com/medpservices" }
+  ],
+  "metaKeywords": "accompagnement administratif, titre de séjour, naturalisation, services à la personne, écrivain public, CAF, APL, Cameroun, France",
+  "announcementActive": true,
+  "announcementText": "🚀 Lancement officiel ! Diagnostic Express gratuit pour nos 20 premiers clients — code MEDP20",
+  "announcementLink": "/contact",
+  "stripeLive": false,
+  "stripePublishableKey": "pk_test_VOTRE_CLE_PUBLIQUE_STRIPE",
+  "paypalClientId": "VOTRE_CLIENT_ID_PAYPAL"
+}

@@ -1,0 +1,88 @@
+---
+import settings from '../data/settings.json';
+import ChatBot from '../components/ChatBot';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const siteTitle = title ? `${title} — ${settings.siteTitle.split('—')[1]?.trim() || 'MEDP Services'}` : settings.siteTitle;
+const siteDescription = description || settings.siteDescription;
+const siteImage = image || '/assets/logo-mps-3d.png';
+const themeColor = settings.primaryColor || '#002B5C';
+---
+
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content={siteDescription}>
+  <meta name="keywords" content={settings.metaKeywords}>
+  <meta name="theme-color" content={themeColor}>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content={settings.siteTitle.split('—')[0]?.trim() || 'MEDP Services'}>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>{siteTitle}</title>
+  <meta property="og:title" content={siteTitle}>
+  <meta property="og:description" content={siteDescription}>
+  <meta property="og:image" content={siteImage}>
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" defer></script>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": settings.siteTitle.split('—')[0]?.trim(),
+    "url": "https://medp-services.netlify.app",
+    "logo": "https://medp-services.netlify.app/assets/logo-mps-3d.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": settings.whatsappNumber,
+      "contactType": "customer service",
+      "availableLanguage": ["French", "English"]
+    },
+    "sameAs": settings.socials?.map(s => s.url) || []
+  })} />
+</head>
+<body class="bg-mps-cream text-mps-dark font-body antialiased relative">
+  <slot />
+  <ChatBot client:load />
+  <script define:vars={{ settings }}>
+    // Triple-click logo detection for CMS activation
+    let logoClicks = 0;
+    let logoClickTimer;
+    const logo = document.getElementById('mps-logo');
+    if (logo) {
+      logo.addEventListener('click', () => {
+        logoClicks++;
+        if (logoClicks === 1) {
+          logoClickTimer = setTimeout(() => { logoClicks = 0; }, 800);
+        }
+        if (logoClicks >= 3) {
+          clearTimeout(logoClickTimer);
+          logoClicks = 0;
+          const netlifyIdentity = window.netlifyIdentity;
+          if (netlifyIdentity) {
+            netlifyIdentity.open('login');
+            netlifyIdentity.on('login', () => {
+              window.location.href = '/admin/';
+            });
+          } else {
+            window.location.href = '/admin/';
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
