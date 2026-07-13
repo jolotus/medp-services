@@ -5,7 +5,7 @@ pubDate: 2026-06-05
 category: "etrangers"
 tags: ["passeport camerounais", "visa", "Cameroun", "consulat", "diaspora"]
 author: "MPS Team"
-image: "/assets/pole-2-etrangers-sejour.png"
+image: "/assets/pole-2-etrangers-sejour.webp"
 featured: false
 ---
 

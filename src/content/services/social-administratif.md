@@ -3,8 +3,9 @@ title: "Accompagnement Social & Administratif"
 description: "Aide aux démarches sociales, accès au droit, constitutions de dossiers et suivi administratif personnalisé."
 category: "social"
 price: "Sur mesure"
+tariffSlug: ""
 icon: "🤝"
-image: "/assets/pole-3-social-administratif.png"
+image: "/assets/pole-3-social-administratif.webp"
 order: 3
 featured: false
 ---

@@ -5,7 +5,7 @@ pubDate: 2026-06-01
 category: "etrangers"
 tags: ["titre de séjour", "ANEF", "préfecture", "étrangers", "2026"]
 author: "MPS Team"
-image: "/assets/pole-2-etrangers-sejour.png"
+image: "/assets/pole-2-etrangers-sejour.webp"
 featured: true
 ---
 

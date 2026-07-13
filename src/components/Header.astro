@@ -1,0 +1,42 @@
+---
+import settings from '../data/settings.json';
+const links = settings.navigation.filter(link => {
+  if (link.href === '/simulateur' && !settings.features.simulatorEnabled) return false;
+  if (link.href === '/generateur-lettres' && !settings.features.letterGeneratorEnabled) return false;
+  return true;
+});
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-transparent">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 lg:h-24">
+    <a href="/" id="mps-logo" class="flex items-center gap-4 select-none group" aria-label="MEDP Services — Accueil">
+      <img src={settings.branding.logoHeader} alt="" width="1408" height="768" class="h-14 lg:h-16 w-auto object-contain drop-shadow-lg" fetchpriority="high" />
+      <div class="hidden sm:block"><div class="font-display font-bold text-xl lg:text-2xl text-white brand-title">{settings.branding.brandName}</div><p class="text-[10px] uppercase tracking-[.2em] text-white/80 brand-tagline">{settings.branding.brandTagline}</p></div>
+    </a>
+    <nav class="hidden lg:flex items-center gap-7" aria-label="Navigation principale">
+      {links.map(link => <a href={link.href} aria-current={pathname === link.href ? 'page' : undefined} class="relative text-sm font-semibold text-white hover:text-mps-gold nav-link">{link.label}{link.badge && <span class="absolute -top-3 -right-6 px-1.5 py-0.5 rounded bg-mps-red text-white text-[9px]">{link.badge}</span>}</a>)}
+      <a href="/contact" class="px-6 py-3 rounded-full bg-mps-red text-white text-sm font-bold hover:bg-mps-red-dark">Devis gratuit</a>
+    </nav>
+    <button id="menu-toggle" type="button" class="lg:hidden p-2 rounded-lg text-white" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  </div>
+  <nav id="mobile-menu" class="hidden lg:hidden bg-white border-t border-mps-navy/10 shadow-2xl px-6 py-6 space-y-3" aria-label="Navigation mobile">
+    {links.map(link => <a href={link.href} aria-current={pathname === link.href ? 'page' : undefined} class="flex justify-between text-mps-navy font-bold text-lg py-2">{link.label}{link.badge && <span class="px-2 py-1 rounded bg-mps-red text-white text-[10px]">{link.badge}</span>}</a>)}
+  </nav>
+</header>
+<script>
+  const header = document.querySelector<HTMLElement>('#site-header');
+  const toggle = document.querySelector<HTMLButtonElement>('#menu-toggle');
+  const menu = document.querySelector<HTMLElement>('#mobile-menu');
+  const setScrolled = () => {
+    const active = window.scrollY > 20 || toggle?.getAttribute('aria-expanded') === 'true';
+    header?.classList.toggle('bg-white/95', active); header?.classList.toggle('shadow-lg', active);
+    header?.querySelectorAll('.nav-link').forEach(el => { el.classList.toggle('text-white', !active); el.classList.toggle('text-mps-navy', active); });
+    header?.querySelector('.brand-title')?.classList.toggle('text-white', !active); header?.querySelector('.brand-title')?.classList.toggle('text-mps-navy', active);
+    header?.querySelector('.brand-tagline')?.classList.toggle('text-white/80', !active); header?.querySelector('.brand-tagline')?.classList.toggle('text-mps-red', active);
+    toggle?.classList.toggle('text-white', !active); toggle?.classList.toggle('text-mps-navy', active);
+  };
+  const close = () => { toggle?.setAttribute('aria-expanded','false'); toggle?.setAttribute('aria-label','Ouvrir le menu'); menu?.classList.add('hidden'); document.body.style.overflow=''; setScrolled(); };
+  toggle?.addEventListener('click', () => { const open=toggle.getAttribute('aria-expanded')!=='true'; toggle.setAttribute('aria-expanded',String(open)); toggle.setAttribute('aria-label',open?'Fermer le menu':'Ouvrir le menu'); menu?.classList.toggle('hidden',!open); document.body.style.overflow=open?'hidden':''; setScrolled(); });
+  document.addEventListener('keydown', event => { if(event.key==='Escape') close(); });
+  window.addEventListener('scroll', setScrolled, { passive:true }); setScrolled();
+</script>

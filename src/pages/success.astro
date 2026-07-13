@@ -1,12 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import WhatsAppButton from '../components/WhatsAppButton';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
 ---
 
-<Layout title="Merci pour votre confiance — MEDP Services" description="Votre paiement ou demande a été enregistrée. Nous vous recontactons très rapidement.">
-  <Header client:load />
+<Layout noindex title="Merci pour votre confiance — MEDP Services" description="Votre paiement ou demande a été enregistrée. Nous vous recontactons très rapidement.">
+  <Header />
 
   <section class="pt-32 pb-20 min-h-[70vh] flex items-center justify-center bg-mps-cream">
     <div class="max-w-xl mx-auto px-4 text-center">
@@ -17,10 +17,10 @@ import WhatsAppButton from '../components/WhatsAppButton';
       <p class="text-gray-600 text-lg mb-8">Votre demande a bien été enregistrée. Notre équipe MEDP vous recontacte sous 24h maximum par WhatsApp ou téléphone.</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="/" class="px-6 py-3 rounded-full bg-mps-navy text-white font-semibold hover:bg-blue-900 transition-colors">Retour à l'accueil</a>
-        <WhatsAppButton text="Bonjour MEDP, je viens de finaliser ma commande. Quelles sont les prochaines étapes ?" floating={false} client:load />
+        <WhatsAppButton text="Bonjour MEDP, je viens de finaliser ma commande. Quelles sont les prochaines étapes ?" floating={false} />
       </div>
     </div>
   </section>
 
-  <Footer client:load />
+  <Footer />
 </Layout>

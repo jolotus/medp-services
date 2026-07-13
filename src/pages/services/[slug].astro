@@ -1,10 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import WhatsAppButton from '../../components/WhatsAppButton';
-import StripeCheckout from '../../components/StripeCheckout';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import { getCollection } from 'astro:content';
+import settings from '../../data/settings.json';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -12,11 +12,16 @@ export async function getStaticPaths() {
 }
 
 const { service } = Astro.props;
+const tariffs = await getCollection('tarifs');
+const linkedTariff = service.data.tariffSlug
+  ? tariffs.find(t => t.slug === service.data.tariffSlug)
+  : undefined;
+const displayedPrice = linkedTariff?.data.price || service.data.price;
 const { Content } = await service.render();
 ---
 
 <Layout title={`${service.data.title} — MEDP Services`} description={service.data.description} image={service.data.image}>
-  <Header client:load />
+  <Header />
 
   <section class="pt-32 pb-12 bg-mps-navy text-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,9 +31,9 @@ const { Content } = await service.render();
       <h1 class="font-display text-3xl sm:text-5xl font-bold mb-4">{service.data.title}</h1>
       <p class="text-white/80 text-lg">{service.data.description}</p>
       <div class="flex flex-wrap items-center gap-4 mt-6">
-        {service.data.price && (
+        {displayedPrice && (
           <span class="px-4 py-2 rounded-full bg-mps-gold/20 text-mps-gold font-bold border border-mps-gold/30">
-            {service.data.price}
+            {displayedPrice}
           </span>
         )}
         {service.data.badge && (
@@ -43,7 +48,7 @@ const { Content } = await service.render();
   <section class="py-16 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       {service.data.image && (
-        <img src={service.data.image} alt={service.data.title} class="w-full h-64 sm:h-96 object-cover rounded-2xl shadow-lg mb-10" loading="eager" />
+        <img src={service.data.image} alt={service.data.title} width="1200" height="675" class="w-full h-64 sm:h-96 object-cover rounded-2xl shadow-lg mb-10" loading="eager" />
       )}
       <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:text-mps-navy prose-a:text-mps-red hover:prose-a:text-mps-navy">
         <Content />
@@ -52,13 +57,21 @@ const { Content } = await service.render();
       <div class="mt-12 p-8 bg-mps-cream rounded-2xl border border-mps-gold/20">
         <h3 class="font-display text-xl font-bold text-mps-navy mb-4">Intéressé(e) par cette prestation ?</h3>
         <div class="flex flex-col sm:flex-row gap-4">
-          <WhatsAppButton text={service.data.whatsappText || `Bonjour MEDP, je suis intéressé(e) par : ${service.data.title}`} floating={false} client:load />
-          <StripeCheckout buttonText="Commander en ligne" client:load />
+          <WhatsAppButton text={service.data.whatsappText || `Bonjour MEDP, je suis intéressé(e) par : ${service.data.title}`} floating={false} />
+          <a href={`https://wa.me/${settings.contact.whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(`Bonjour MEDP, je souhaite commander : ${service.data.title}.`)}`} target="_blank" rel="noopener noreferrer" class="inline-flex px-6 py-3 rounded-xl bg-mps-navy text-white font-semibold">Commander par WhatsApp</a>
         </div>
       </div>
     </div>
   </section>
 
-  <Footer client:load />
-  <WhatsAppButton client:load />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'Service',
+    name: service.data.title, description: service.data.description,
+    image: service.data.image ? new URL(service.data.image, Astro.site).href : undefined,
+    provider: { '@type': 'Organization', name: settings.branding.brandName, url: Astro.site },
+    areaServed: 'France',
+    offers: displayedPrice ? { '@type': 'Offer', priceCurrency: 'EUR', description: displayedPrice, url: new URL(Astro.url.pathname, Astro.site).href } : undefined
+  }).replace(/</g, '\u003c')} />
+  <Footer />
+  <WhatsAppButton />
 </Layout>

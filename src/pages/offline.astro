@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout noindex title="Hors connexion — MEDP Services" description="Vous êtes actuellement hors connexion.">
+  <main class="min-h-screen bg-mps-navy text-white grid place-items-center p-6" id="main-content">
+    <div class="max-w-lg text-center">
+      <img src="/assets/logo-mps-3d.webp" width="220" height="120" alt="MEDP Services" class="h-28 w-auto mx-auto mb-7" />
+      <h1 class="font-display text-4xl font-bold mb-4">Vous êtes hors connexion</h1>
+      <p class="text-white/70 mb-8">Certaines pages déjà consultées restent disponibles. Reconnectez-vous pour envoyer un formulaire, utiliser WhatsApp ou effectuer un paiement.</p>
+      <button type="button" onclick="location.reload()" class="px-7 py-3 rounded-full bg-mps-gold text-mps-navy font-bold">Réessayer</button>
+    </div>
+  </main>
+</Layout>

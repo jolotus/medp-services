@@ -2,9 +2,10 @@
 title: "Accueil, Information & Orientation"
 description: "Bénéficiez d'un accueil chaleureux et d'une orientation personnalisée pour toutes vos démarches administratives et sociales en France."
 category: "accueil"
-price: "Gratuit"
+price: "10€"
+tariffSlug: ""
 icon: "🎯"
-image: "/assets/pole-1-accueil-orientation.png"
+image: "/assets/pole-1-accueil-orientation.webp"
 badge: "NOUVEAU"
 whatsappText: "Bonjour MEDP, je souhaite obtenir une orientation pour mes démarches."
 order: 1

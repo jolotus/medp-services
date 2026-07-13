@@ -5,7 +5,7 @@ pubDate: 2026-04-10
 category: "famille"
 tags: ["CAF", "APL", "prime d'activité", "allocations", "logement"]
 author: "MPS Team"
-image: "/assets/pole-5-famille-allocations.png"
+image: "/assets/pole-5-famille-allocations.webp"
 featured: false
 ---
 
@@ -50,4 +50,4 @@ Utilisez le [simulateur officiel](https://www.caf.fr/ma-caf/mes-services-en-lign
 - **Erreur de coordonnées bancaires** : vérifiez votre RIB
 - **Non-déclaration de concubinage** : si vous vivez en couple, la situation est commune
 
-> **Notre Pack CAF/APL** à 29€ inclut la vérification de votre dossier, le remplissage des formulaires et le suivi jusqu'au premier versement.
+> **Notre Pack CAF/APL** à 80€ par trimestre inclut la vérification de votre dossier, le remplissage des formulaires et le suivi jusqu'au premier versement.

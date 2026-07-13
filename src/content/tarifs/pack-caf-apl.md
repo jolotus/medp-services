@@ -11,6 +11,8 @@ includes:
   - "Suivi et aide à la déclaration trimestrielle"
   - "Accès prioritaire WhatsApp"
 order: 5
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

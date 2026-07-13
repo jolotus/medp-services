@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout noindex title="Demande envoyée — MEDP Services" description="Confirmation d’envoi de votre demande à MEDP Services.">
+  <Header />
+  <main class="min-h-[70vh] pt-36 pb-20 bg-mps-cream flex items-center" id="main-content">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+      <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-green-100 text-green-700 grid place-items-center text-3xl" aria-hidden="true">✓</div>
+      <h1 class="font-display text-4xl font-bold text-mps-navy mb-4">Votre demande a bien été envoyée</h1>
+      <p class="text-gray-600 mb-8">Merci. L’équipe MEDP Services reviendra vers vous dès que possible. N’envoyez pas de document sensible avant d’avoir reçu des consignes adaptées.</p>
+      <a href="/" class="inline-flex px-7 py-3 rounded-full bg-mps-navy text-white font-bold hover:bg-mps-red">Retour à l’accueil</a>
+    </div>
+  </main>
+  <Footer />
+</Layout>

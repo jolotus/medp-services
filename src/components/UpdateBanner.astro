@@ -1,0 +1,12 @@
+<aside id="update-banner" class="hidden fixed top-0 inset-x-0 z-[60] bg-mps-gold text-mps-dark px-4 py-2 text-center text-sm font-medium" aria-live="polite">Nouvelle version disponible. <button id="apply-update" class="ml-3 px-3 py-1 bg-mps-dark text-white rounded-md text-xs font-bold">Mettre à jour</button></aside>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+      const show=()=>document.querySelector('#update-banner')?.classList.remove('hidden');
+      if(registration.waiting)show();
+      registration.addEventListener('updatefound',()=>{const worker=registration.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)show();});});
+      document.querySelector('#apply-update')?.addEventListener('click',()=>{registration.waiting?.postMessage({type:'SKIP_WAITING'});});
+      navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload());
+    }).catch(()=>{});
+  }
+</script>

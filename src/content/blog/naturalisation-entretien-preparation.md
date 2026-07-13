@@ -5,7 +5,7 @@ pubDate: 2026-05-28
 category: "etrangers"
 tags: ["naturalisation", "nationalité française", "entretien", "assimilation", "2026"]
 author: "MPS Team"
-image: "/assets/pole-2-etrangers-sejour.png"
+image: "/assets/pole-2-etrangers-sejour.webp"
 featured: true
 ---
 

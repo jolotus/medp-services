@@ -1,18 +1,37 @@
 ---
 import settings from '../data/settings.json';
-import ChatBot from '../components/ChatBot';
+import ChatBot from '../components/ChatBot.astro';
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
 
 export interface Props {
   title?: string;
   description?: string;
   image?: string;
+  noindex?: boolean;
 }
 
-const { title, description, image } = Astro.props;
-const siteTitle = title ? `${title} — ${settings.siteTitle.split('—')[1]?.trim() || 'MEDP Services'}` : settings.siteTitle;
+const { title, description, image, noindex = false } = Astro.props;
+const siteTitle = !title || title === settings.siteTitle
+  ? settings.siteTitle
+  : title.includes('MEDP Services') ? title : `${title} — MEDP Services`;
 const siteDescription = description || settings.siteDescription;
-const siteImage = image || '/assets/logo-mps-3d.png';
-const themeColor = settings.primaryColor || '#002B5C';
+const siteImage = new URL(image || settings.branding?.logoHeader || '/assets/logo-mps-3d.webp', Astro.site || 'https://medp-services.netlify.app');
+const themeColor = settings.theme?.primaryColor || '#002B5C';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://medp-services.netlify.app');
+const tariffEntries = await getCollection('tarifs');
+const serviceEntries = await getCollection('services');
+const faqEntries = await getCollection('faq');
+const chatbotKnowledge = faqEntries.map(item => ({ keywords: [...item.data.keywords, item.data.question], answer: item.data.answer }));
+const chatbotPrices = Object.fromEntries([
+  ...tariffEntries.map(t => [t.slug, t.data.price]),
+  ...serviceEntries.map(service => [`service:${service.slug}`, service.data.price || ''])
+]);
+const hexToRgb = (hex: string) => {
+  const value = hex.replace('#', '');
+  const full = value.length === 3 ? value.split('').map(x => x + x).join('') : value;
+  return `${parseInt(full.slice(0,2),16)} ${parseInt(full.slice(2,4),16)} ${parseInt(full.slice(4,6),16)}`;
+};
 ---
 
 <!DOCTYPE html>
@@ -21,66 +40,75 @@ const themeColor = settings.primaryColor || '#002B5C';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content={siteDescription}>
+  <link rel="canonical" href={canonicalURL}>
+  <link rel="alternate" type="application/rss+xml" title="MEDP Services — Blog" href="/rss.xml">
+  <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large"}>
   <meta name="keywords" content={settings.metaKeywords}>
   <meta name="theme-color" content={themeColor}>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content={settings.siteTitle.split('—')[0]?.trim() || 'MEDP Services'}>
-  <link rel="manifest" href="/manifest.json">
+  {settings.features?.pwaEnabled !== false && <link rel="manifest" href="/manifest.webmanifest">}
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/assets/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href={settings.branding?.favicon || '/assets/favicon.png'}>
+  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/playfair-latin.woff2" as="font" type="font/woff2" crossorigin>
   <title>{siteTitle}</title>
   <meta property="og:title" content={siteTitle}>
   <meta property="og:description" content={siteDescription}>
   <meta property="og:image" content={siteImage}>
   <meta property="og:type" content="website">
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:locale" content="fr_FR">
   <meta name="twitter:card" content="summary_large_image">
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" defer></script>
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": settings.siteTitle.split('—')[0]?.trim(),
     "url": "https://medp-services.netlify.app",
-    "logo": "https://medp-services.netlify.app/assets/logo-mps-3d.png",
+    "logo": "https://medp-services.netlify.app/assets/logo-mps-3d.webp",
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": settings.whatsappNumber,
+      "telephone": settings.contact?.whatsappNumber,
       "contactType": "customer service",
       "availableLanguage": ["French", "English"]
     },
     "sameAs": settings.socials?.map(s => s.url) || []
   })} />
+  <style define:vars={{
+    mpsPrimary: hexToRgb(settings.theme?.primaryColor || '#002B5C'),
+    mpsSecondary: hexToRgb(settings.theme?.secondaryColor || '#C8102E'),
+    mpsGold: hexToRgb(settings.theme?.goldColor || '#D4AF37'),
+    mpsCream: hexToRgb(settings.theme?.creamColor || '#F5F5F0'),
+    mpsDark: hexToRgb(settings.theme?.darkColor || '#0A0E1A')
+  }}>
+    :root { --mps-primary: var(--mpsPrimary); --mps-secondary: var(--mpsSecondary); --mps-gold: var(--mpsGold); --mps-cream: var(--mpsCream); --mps-dark: var(--mpsDark); }
+  </style>
 </head>
 <body class="bg-mps-cream text-mps-dark font-body antialiased relative">
-  <slot />
-  <ChatBot client:load />
-  <script define:vars={{ settings }}>
-    // Triple-click logo detection for CMS activation
-    let logoClicks = 0;
-    let logoClickTimer;
+  <a href="#contenu" class="skip-link">Aller au contenu</a>
+  <div id="contenu"><slot /></div>
+  {settings.features?.chatbotEnabled !== false && <ChatBot prices={chatbotPrices} whatsappDisplay={settings.contact?.whatsappDisplay} hours={settings.contact?.hours} knowledge={chatbotKnowledge} />}
+  <script>
+    // Geste discret d’activation : maintenir le logo pendant 4 secondes.
+    // Le geste ne remplace pas l’autorisation : une session Netlify Identity/Git Gateway valide reste obligatoire.
     const logo = document.getElementById('mps-logo');
     if (logo) {
-      logo.addEventListener('click', () => {
-        logoClicks++;
-        if (logoClicks === 1) {
-          logoClickTimer = setTimeout(() => { logoClicks = 0; }, 800);
-        }
-        if (logoClicks >= 3) {
-          clearTimeout(logoClickTimer);
-          logoClicks = 0;
-          const netlifyIdentity = window.netlifyIdentity;
-          if (netlifyIdentity) {
-            netlifyIdentity.open('login');
-            netlifyIdentity.on('login', () => {
-              window.location.href = '/admin/';
-            });
-          } else {
-            window.location.href = '/admin/';
-          }
-        }
+      let timer: number | undefined;
+      let activated = false;
+      const cancel = () => { if (timer) window.clearTimeout(timer); timer = undefined; };
+      const openAdmin = () => {
+        activated = true;
+        window.location.assign('/admin/');
+      };
+      logo.addEventListener('pointerdown', (event) => {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        cancel();
+        timer = window.setTimeout(openAdmin, 4000);
+      });
+      ['pointerup', 'pointercancel', 'pointerleave'].forEach(name => logo.addEventListener(name, cancel));
+      logo.addEventListener('click', (event) => {
+        if (activated) { event.preventDefault(); activated = false; }
       });
     }
   </script>

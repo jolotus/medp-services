@@ -1,15 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import WhatsAppButton from '../components/WhatsAppButton';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog').then(a => a.sort((a,b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate)));
 ---
 
 <Layout title="Blog & Guides — MEDP Services" description="Articles, guides pratiques et actualités pour vous accompagner dans vos démarches administratives et personnelles.">
-  <Header client:load />
+  <Header />
 
   <section class="pt-32 pb-20 bg-mps-navy text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -25,7 +25,7 @@ const posts = await getCollection('blog').then(a => a.sort((a,b) => +new Date(b.
           <a href={`/blog/${post.slug}`} class="group block bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-1">
             {post.data.image && (
               <div class="h-48 overflow-hidden">
-                <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                <img src={post.data.image} alt={post.data.title} width="640" height="360" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
               </div>
             )}
             <div class="p-6">
@@ -42,6 +42,6 @@ const posts = await getCollection('blog').then(a => a.sort((a,b) => +new Date(b.
     </div>
   </section>
 
-  <Footer client:load />
-  <WhatsAppButton client:load />
+  <Footer />
+  <WhatsAppButton />
 </Layout>

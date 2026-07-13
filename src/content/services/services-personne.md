@@ -3,8 +3,9 @@ title: "Services à la Personne (Ménage, Repassage, Aides)"
 description: "Ménage chez les particuliers, repassage, courses, aides administratives à domicile. Bénéficiez du crédit d'impôt de 50%."
 category: "personne"
 price: "22€ à 35€/heure"
+tariffSlug: ""
 icon: "🏠"
-image: "/assets/pole-6-services-personne.png"
+image: "/assets/pole-6-services-personne.webp"
 badge: "-50% IMPÔT"
 order: 6
 featured: true

@@ -9,6 +9,8 @@ includes:
   - "Confirmation et accusé de réception"
 badge: ""
 order: 8
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

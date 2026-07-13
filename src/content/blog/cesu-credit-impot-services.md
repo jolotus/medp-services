@@ -5,7 +5,7 @@ pubDate: 2026-05-15
 category: "personne"
 tags: ["CESU", "crédit d'impôt", "services à la personne", "ménage", "aide à domicile"]
 author: "MPS Team"
-image: "/assets/pole-6-services-personne.png"
+image: "/assets/pole-6-services-personne.webp"
 featured: false
 ---
 

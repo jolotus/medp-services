@@ -12,6 +12,8 @@ includes:
   - "Accès prioritaire WhatsApp"
 badge: "PREMIUM"
 order: 3
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

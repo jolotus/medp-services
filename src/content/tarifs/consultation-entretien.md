@@ -9,6 +9,8 @@ includes:
   - "Réponses à toutes vos questions"
 badge: ""
 order: 6
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

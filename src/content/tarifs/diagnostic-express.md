@@ -9,6 +9,8 @@ includes:
   - "Devis personnalisé si besoin d'accompagnement"
 badge: "IDEAL POUR DÉBUTER"
 order: 1
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

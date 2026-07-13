@@ -8,6 +8,8 @@ includes:
   - "Conseils sur les prochaines étapes"
 badge: ""
 order: 10
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

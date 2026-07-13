@@ -2,9 +2,10 @@
 title: "Famille, Allocations & Droit de la Famille"
 description: "Aide aux démarches familiales : CAF, APL, prime d'activité, regroupement familial, et droits des parents."
 category: "famille"
-price: "À partir de 29€"
+price: "80€/trimestre"
+tariffSlug: "pack-caf-apl"
 icon: "👨‍👩‍👧‍👦"
-image: "/assets/pole-5-famille-allocations.png"
+image: "/assets/pole-5-famille-allocations.webp"
 order: 5
 featured: true
 ---
@@ -25,7 +26,7 @@ Les familles font face à de nombreuses démarches administratives. Nous simplif
 
 ### Tarifs
 
-- **Pack CAF / APL** : 29€ (demande ou mise à jour complète)
+- **Pack CAF / APL** : 80€ par trimestre (demande ou mise à jour complète)
 - **Déclaration trimestrielle** : 15€
 - **Actualisation France Travail** : 10€
 - **Droit de la famille (sur mesure)** : devis gratuit

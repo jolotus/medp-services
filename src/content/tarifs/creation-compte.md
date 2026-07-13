@@ -8,6 +8,8 @@ includes:
   - "Première prise en main accompagnée"
 badge: ""
 order: 9
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

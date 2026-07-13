@@ -5,7 +5,7 @@ pubDate: 2026-03-20
 category: "documents"
 tags: ["écrivain public", "rédaction", "lettre administrative", "formulaire", "aide"]
 author: "MPS Team"
-image: "/assets/pole-4-documents-ecriture.png"
+image: "/assets/pole-4-documents-ecriture.webp"
 featured: false
 ---
 
@@ -43,4 +43,4 @@ Tout ce que vous confiez à un écrivain public est strictement confidentiel. C'
 | C.V. + lettre de motivation | 35€ |
 | Dossier complet | Sur devis |
 
-> **MPS Premium** : accès illimité à nos modèles de lettres types pour 9,90€/mois. Économisez du temps et de l'argent sur vos démarches récurrentes.
+> **MPS Premium** : accès illimité à nos modèles de lettres types pour 450€/an. Économisez du temps et de l'argent sur vos démarches récurrentes.

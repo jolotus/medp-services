@@ -11,6 +11,8 @@ includes:
   - "Selon la complexité, avec recours (avocat) : jusqu'à 4000€"
 badge: ""
 order: 7
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

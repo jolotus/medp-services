@@ -12,6 +12,8 @@ includes:
   - "Annulable à tout moment"
 badge: "RECOMMANDÉ"
 order: 4
+paymentMode: "payment"
+active: true
 popular: false
 ---
 

@@ -11,6 +11,8 @@ includes:
   - "Accès prioritaire WhatsApp pendant l'accompagnement"
 badge: "POPULAIRE"
 order: 2
+paymentMode: "payment"
+active: true
 popular: true
 ---
 

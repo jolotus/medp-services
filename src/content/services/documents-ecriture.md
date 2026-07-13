@@ -3,8 +3,9 @@ title: "Documents, Remplissage & Écrivain Public"
 description: "Remplissage de tous types de documents, aide à la rédaction, écrivain public, et complémentaire santé solidaire (CSS)."
 category: "documents"
 price: "À partir de 15€"
+tariffSlug: ""
 icon: "📝"
-image: "/assets/pole-4-documents-ecriture.png"
+image: "/assets/pole-4-documents-ecriture.webp"
 order: 4
 featured: true
 ---
@@ -35,4 +36,4 @@ Nous vous accompagnons dans la demande de CSS :
 - Remplissage formulaire : 15€ par formulaire
 - Constitution dossier complet : sur devis
 
-> **MPS Premium** : accès illimité à nos modèles de lettres types pour 9,90€/mois
+> **MPS Premium** : accès illimité à nos modèles de lettres types pour 450€/an

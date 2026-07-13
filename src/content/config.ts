@@ -7,6 +7,7 @@ const services = defineCollection({
     description: z.string(),
     category: z.enum(['accueil', 'etrangers', 'social', 'documents', 'famille', 'personne']),
     price: z.string().optional(),
+    tariffSlug: z.string().optional(),
     icon: z.string().optional(),
     image: z.string().optional(),
     badge: z.string().optional(),
@@ -41,7 +42,9 @@ const tarifs = defineCollection({
     includes: z.array(z.string()),
     badge: z.string().optional(),
     stripePriceId: z.string().optional(),
+    paymentMode: z.enum(['payment', 'subscription']).default('payment'),
     popular: z.boolean().default(false),
+    active: z.boolean().default(true),
     order: z.number().default(0),
   }),
 });
@@ -65,6 +68,7 @@ const faq = defineCollection({
     question: z.string(),
     answer: z.string(),
     category: z.string(),
+    keywords: z.array(z.string()).default([]),
     order: z.number().default(0),
   }),
 });
@@ -81,4 +85,16 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { services, blog, tarifs, annonces, faq, news };
+
+const pages = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    kind: z.enum(['legal', 'privacy', 'terms', 'page']).default('page'),
+    published: z.boolean().default(false),
+    updatedDate: z.date().optional(),
+  }),
+});
+
+export const collections = { services, blog, tarifs, annonces, faq, news, pages };

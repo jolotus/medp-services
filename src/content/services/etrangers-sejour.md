@@ -2,9 +2,10 @@
 title: "Étrangers en France : Titres de Séjour & Naturalisation"
 description: "Accompagnement complet pour les demandes et renouvellements de titres de séjour, naturalisation, regroupement familial et visas."
 category: "etrangers"
-price: "À partir de 49€"
+price: "900€ à 1600€"
+tariffSlug: "pack-titre-sejour"
 icon: "🌍"
-image: "/assets/pole-2-etrangers-sejour.png"
+image: "/assets/pole-2-etrangers-sejour.webp"
 badge: "POPULAIRE"
 whatsappText: "Bonjour MEDP, j'ai besoin d'aide pour mon titre de séjour / naturalisation."
 order: 2
@@ -33,6 +34,6 @@ Le parcours administratif pour les étrangers en France est complexe. Nous vous 
 - **Connaissance des délais** par préfecture (données crowdsourced)
 - **Préparation à l'entretien** de naturalisation avec quiz interactif
 
-> **Pack Titre de Séjour** : 49€ (accompagnement ANEF + constitution du dossier + suivi)  
-> **Pack Naturalisation** : 89€ (dossier complet + entretien + suivi jusqu'à la décision)  
-> **MPS Premium** : 9,90€/mois (lettres illimitées + modèles + suivi prioritaire)
+> **Pack Titre de Séjour** : 900€ à 1600€ (accompagnement ANEF + constitution du dossier + suivi)
+> **Pack Naturalisation** : 1500€ (dossier complet + entretien + suivi jusqu'à la décision)
+> **MPS Premium** : 450€/an (lettres illimitées + modèles + suivi prioritaire)

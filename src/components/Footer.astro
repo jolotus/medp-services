@@ -1,0 +1,52 @@
+---
+import settings from '../data/settings.json';
+import { getCollection } from 'astro:content';
+const contact = settings.contact;
+const phone = contact.whatsappNumber.replace(/\D/g, '');
+const legalPages = await getCollection('pages', page => page.data.published);
+---
+<footer class="bg-mps-navy-dark text-white/80 relative overflow-hidden">
+  <div class="h-1 bg-gradient-to-r from-mps-navy via-mps-red to-mps-gold"></div>
+  <div class="max-w-7xl mx-auto px-4 py-14 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <section aria-labelledby="footer-brand" class="space-y-5">
+        <div class="flex items-center gap-4">
+          <img src={settings.branding.logoHeader} alt="" width="110" height="60" class="h-16 w-auto object-contain" loading="lazy" decoding="async" />
+          <div>
+            <h2 id="footer-brand" class="font-display text-xl font-bold text-white">{settings.branding.brandName}</h2>
+            <p class="text-xs text-mps-red uppercase tracking-wider">{settings.branding.brandTagline}</p>
+          </div>
+        </div>
+        <p class="text-sm leading-relaxed text-white/70 max-w-sm">{settings.siteDescription}</p>
+      </section>
+
+      <section aria-labelledby="footer-contact">
+        <h2 id="footer-contact" class="font-display text-lg font-bold text-white mb-5">Contact</h2>
+        <address class="not-italic text-sm space-y-3 text-white/70">
+          <p><a class="hover:text-mps-gold" href={`https://wa.me/${phone}`} target="_blank" rel="noopener noreferrer">WhatsApp : {contact.whatsappDisplay}</a></p>
+          {contact.email && <p><a class="hover:text-mps-gold" href={`mailto:${contact.email}`}>{contact.email}</a></p>}
+          <p>{contact.address}</p>
+          <p class="whitespace-pre-line">{contact.hours}</p>
+        </address>
+      </section>
+
+      <nav aria-labelledby="footer-nav">
+        <h2 id="footer-nav" class="font-display text-lg font-bold text-white mb-5">Liens utiles</h2>
+        <ul class="space-y-3 text-sm text-white/70">
+          <li><a href="/services" class="hover:text-mps-gold">Nos services</a></li>
+          {settings.features.simulatorEnabled && <li><a href="/simulateur" class="hover:text-mps-gold">Simulateur</a></li>}
+          <li><a href="/blog" class="hover:text-mps-gold">Blog & guides</a></li>
+          <li><a href="/contact" class="hover:text-mps-gold">Contact</a></li>
+          {legalPages.sort((a, b) => a.data.title.localeCompare(b.data.title, 'fr')).map(page => (
+            <li><a href={`/${page.slug}`} class="hover:text-mps-gold">{page.data.title}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="mt-12 pt-7 border-t border-white/10 flex flex-col lg:flex-row gap-5 justify-between text-xs text-white/45">
+      <p>© {new Date().getFullYear()} {settings.branding.brandTagline} — Tous droits réservés.</p>
+      <p class="max-w-2xl whitespace-pre-line lg:text-right">{settings.footerText}</p>
+    </div>
+  </div>
+</footer>

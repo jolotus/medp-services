@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import WhatsAppButton from '../../components/WhatsAppButton';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -16,7 +16,7 @@ const shareUrl = `https://medp-services.netlify.app/blog/${post.slug}`;
 ---
 
 <Layout title={`${post.data.title} — Blog MEDP Services`} description={post.data.description} image={post.data.image}>
-  <Header client:load />
+  <Header />
 
   <article class="pt-32 pb-12 bg-white">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +29,7 @@ const shareUrl = `https://medp-services.netlify.app/blog/${post.slug}`;
       <h1 class="font-display text-3xl sm:text-4xl font-bold text-mps-navy mb-4 leading-tight">{post.data.title}</h1>
       <p class="text-xl text-gray-600 mb-8">{post.data.description}</p>
       {post.data.image && (
-        <img src={post.data.image} alt={post.data.title} class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-lg mb-10" loading="eager" />
+        <img src={post.data.image} alt={post.data.title} width="1200" height="675" class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-lg mb-10" loading="eager" />
       )}
       <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:text-mps-navy prose-a:text-mps-red hover:prose-a:text-mps-navy">
         <Content />
@@ -51,6 +51,15 @@ const shareUrl = `https://medp-services.netlify.app/blog/${post.slug}`;
     </div>
   </article>
 
-  <Footer client:load />
-  <WhatsAppButton client:load />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'BlogPosting',
+    headline: post.data.title, description: post.data.description,
+    image: post.data.image ? new URL(post.data.image, Astro.site).href : undefined,
+    datePublished: post.data.pubDate.toISOString(), dateModified: (post.data.updatedDate || post.data.pubDate).toISOString(),
+    author: { '@type': 'Person', name: post.data.author },
+    publisher: { '@type': 'Organization', name: 'MEDP Services', logo: { '@type': 'ImageObject', url: new URL('/assets/logo-mps-3d.webp', Astro.site).href } },
+    mainEntityOfPage: shareUrl
+  }).replace(/</g, '\u003c')} />
+  <Footer />
+  <WhatsAppButton />
 </Layout>

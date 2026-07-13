@@ -9,6 +9,8 @@ includes:
   - "Assistance jusqu'à la confirmation"
 badge: ""
 order: 11
+paymentMode: "payment"
+active: true
 popular: false
 ---
 
