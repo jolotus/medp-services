@@ -24,7 +24,8 @@
       const tokenFlow = /invite_token|recovery_token|confirmation_token/.test(location.hash);
       if (!user && tokenFlow) window.netlifyIdentity.open();
     });
-    window.CMS.init({config:'/admin/config.yml'});
+    // Decap se lance automatiquement et charge /admin/config.yml.
+    // Ne pas appeler CMS.init ici : un second démarrage provoque l'erreur removeChild.
     window.addEventListener('load',()=>setTimeout(()=>document.getElementById('boot')?.classList.add('hidden'),700));
     window.netlifyIdentity?.on('logout',()=>location.assign('/'));
   </script>
