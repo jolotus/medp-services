@@ -50,7 +50,7 @@
   [headers.values]
     Cache-Control = "no-store"
     X-Robots-Tag = "noindex, nofollow, noarchive"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://identity.netlify.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.netlify.com https://*.netlify.com https://identity.netlify.com https://api.github.com; frame-src https://identity.netlify.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://identity.netlify.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.netlify.com https://*.netlify.com https://identity.netlify.com https://api.github.com; frame-src https://identity.netlify.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
 
 [[headers]]
   for = "/manifest.webmanifest"
@@ -62,3 +62,65 @@
   for = "/assets/uploads/*"
   [headers.values]
     Cache-Control = "public, max-age=3600, must-revalidate"
+
+# FALLBACK_IMAGES_PNG — à conserver tant que les fichiers WebP ne sont pas présents sur GitHub
+
+[[redirects]]
+  from = "/assets/logo-mps-3d.webp"
+  to = "/assets/logo-mps-3d.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/logo-mps-hero.webp"
+  to = "/assets/logo-mps-hero.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/pole-1-accueil-orientation.webp"
+  to = "/assets/pole-1-accueil-orientation.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/pole-2-etrangers-sejour.webp"
+  to = "/assets/pole-2-etrangers-sejour.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/pole-3-social-administratif.webp"
+  to = "/assets/pole-3-social-administratif.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/pole-4-documents-ecriture.webp"
+  to = "/assets/pole-4-documents-ecriture.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/pole-5-famille-allocations.webp"
+  to = "/assets/pole-5-famille-allocations.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/pole-6-services-personne.webp"
+  to = "/assets/pole-6-services-personne.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/screenshot-wide.webp"
+  to = "/assets/screenshot-wide.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/screenshot-narrow.webp"
+  to = "/assets/screenshot-narrow.png"
+  status = 200
+  force = true
