@@ -4,16 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        'mps-navy': '#002B5C',
+        'mps-navy': 'rgb(var(--mps-primary) / <alpha-value>)',
         'mps-navy-light': '#003d82',
         'mps-navy-dark': '#001a3d',
-        'mps-red': '#C8102E',
+        'mps-red': 'rgb(var(--mps-secondary) / <alpha-value>)',
         'mps-red-light': '#e01e3f',
         'mps-red-dark': '#a00d24',
-        'mps-gold': '#D4AF37',
+        'mps-gold': 'rgb(var(--mps-gold) / <alpha-value>)',
         'mps-gold-light': '#e8c95a',
-        'mps-cream': '#F5F5F0',
-        'mps-dark': '#0A0E1A',
+        'mps-cream': 'rgb(var(--mps-cream) / <alpha-value>)',
+        'mps-dark': 'rgb(var(--mps-dark) / <alpha-value>)',
         'mps-white': '#FFFFFF',
       },
       fontFamily: {
